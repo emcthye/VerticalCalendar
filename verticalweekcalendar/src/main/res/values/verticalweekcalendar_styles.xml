@@ -3,11 +3,12 @@
     <style name="VerticalWeekCalendarStyle">
 
 <!--        <item name="customFont">Quicksand-Light.otf</item>-->
-        <item name="dayTextColor">#545454</item>
+        <item name="dayTextColor">@android:color/darker_gray</item>
         <item name="weekDayTextColor">@android:color/darker_gray</item>
         <item name="dayBackground">@android:color/white</item>
-        <item name="selectedDayTextColor">@android:color/holo_orange_light</item>
-        <item name="selectedBackground">@android:color/darker_gray</item>
+        <item name="selectedDayTextColor">#545454</item>
+
+        <item name="selectedBackground">@android:color/white</item>
 
     </style>
 

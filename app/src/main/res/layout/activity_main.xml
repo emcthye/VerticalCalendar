@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@android:color/darker_gray">
+    android:background="@android:color/white">
 
     <com.emc.verticalweekcalendar.VerticalWeekCalendar
         android:id="@+id/verticalCalendar"

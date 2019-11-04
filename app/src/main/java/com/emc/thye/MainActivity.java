@@ -43,6 +43,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        calendarView.setCustomFont("alex_brush_regular.ttf");
+//        calendarView.setCustomFont("alex_brush_regular.ttf");
     }
 }
