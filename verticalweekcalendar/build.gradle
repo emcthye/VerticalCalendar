@@ -1,9 +1,34 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+ext {
+
+    bintrayRepo = "VerticalCalendar"
+    bintrayName = "VerticalCalendar"
+
+    libraryName = 'verticalweekcalendar'
+
+    publishedGroupId = 'com.emc.thye'
+    artifact = 'VerticalCalendar'
+    libraryVersion = '1.0.6'
+
+    libraryDescription = 'A custom vertical infnite scroll calendar library'
+
+    siteUrl = 'https://github.com/emcthye/VerticalCalendar'
+    gitUrl = 'https://github.com/emcthye/VerticalCalendar.git'
+
+    developerId = 'emcthye'
+    developerName = 'Thye'
+    developerEmail = 'munchun.thye@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
-
 
     defaultConfig {
         minSdkVersion 19
@@ -34,4 +59,13 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation "androidx.paging:paging-runtime:2.1.0"
     implementation 'androidx.cardview:cardview:1.0.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+if (project.rootProject.file('local.properties').exists()) {
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
 }
