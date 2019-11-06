@@ -96,6 +96,10 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
         return adapter == null ? createAdapter() : adapter;
     }
 
+    public void refresh(){
+        getAdapter().notifyDataSetChanged();
+    }
+
     private VerticalWeekAdapter createAdapter() {
 
         final Executor executor = Executors.newFixedThreadPool(5);
