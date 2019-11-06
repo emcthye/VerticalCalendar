@@ -1,2 +1,2 @@
 # VerticalCalendar
-A custom vertical infnite scroll calendar library
+A custom vertical infinite scroll calendar library
