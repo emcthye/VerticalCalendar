@@ -1,8 +1,29 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+publish {
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    bintrayUser = properties.getProperty('bintray.user')
+    bintrayKey = properties.getProperty('bintray.apiKey')
+    dryRun = false
+
+    userOrg = 'emcthye'
+    repoName = 'VerticalCalendar'
+
+    groupId = 'com.emc.thye'
+    artifactId = 'VerticalCalendar'
+    publishVersion = '1.0.3'
+
+    desc = 'A custom vertical infnite scroll calendar library'
+    website = 'https://github.com/emcthye/VerticalCalendar'
+}
+
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
 
 
     defaultConfig {
