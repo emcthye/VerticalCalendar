@@ -1,2 +1,2 @@
 # VerticalCalendar
-View calendar day in vertical infinite scroll
+A custom vertical infnite scroll calendar library
