@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -89,6 +90,25 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
         RecyclerView recyclerView  = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(getAdapter());
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (lm.findFirstVisibleItemPosition() < 15 ) {
+                    getAdapter().records.add(0, createRows(15));
+                    getAdapter().notifyItemInserted(0);
+                    Log.i("onScrollChange", "FirstVisibleItem: " + lm.findFirstVisibleItemPosition());
+                    Log.i("onScrollChange", "new Size: " + getAdapter().records.size());
+                } else if ((getAdapter().records.size() - 1 - lm.findLastVisibleItemPosition()) < 15) {
+                    getAdapter().records.add(getAdapter().records.size() - 1, createRows(15));
+                    getAdapter().notifyItemInserted(getAdapter().records.size() - 1);
+                    Log.i("onScrollChange", "LastVisibleItem: " + lm.findLastVisibleItemPosition());
+                    Log.i("onScrollChange", "new Size: " + getAdapter().records.size());
+                }
+            }
+        });
     }
 
     public VerticalWeekAdapter getAdapter() {
