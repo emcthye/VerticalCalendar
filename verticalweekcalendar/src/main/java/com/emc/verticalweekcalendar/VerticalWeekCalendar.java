@@ -42,6 +42,7 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
     private int selectedBackground;
 
     private VerticalWeekAdapter adapter;
+    private CalendarDataSourceFactory factory;
     private DateWatcher dateWatcher;
     private LifecycleOwner owner;
 
@@ -91,21 +92,20 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(getAdapter());
 
+        recyclerView.scrollToPosition(20);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
                 if (lm.findFirstVisibleItemPosition() < 15 ) {
-                    getAdapter().records.add(0, createRows(15));
-                    getAdapter().notifyItemInserted(0);
+                    getAdapter().addCalendarDays(false);
                     Log.i("onScrollChange", "FirstVisibleItem: " + lm.findFirstVisibleItemPosition());
-                    Log.i("onScrollChange", "new Size: " + getAdapter().records.size());
-                } else if ((getAdapter().records.size() - 1 - lm.findLastVisibleItemPosition()) < 15) {
-                    getAdapter().records.add(getAdapter().records.size() - 1, createRows(15));
-                    getAdapter().notifyItemInserted(getAdapter().records.size() - 1);
+                    Log.i("onScrollChange", "new Size: " + getAdapter().days.size());
+                } else if ((getAdapter().days.size() - 1 - lm.findLastVisibleItemPosition()) < 15) {
+                    getAdapter().addCalendarDays(true);
                     Log.i("onScrollChange", "LastVisibleItem: " + lm.findLastVisibleItemPosition());
-                    Log.i("onScrollChange", "new Size: " + getAdapter().records.size());
+                    Log.i("onScrollChange", "new Size: " + getAdapter().days.size());
                 }
             }
         });
@@ -117,39 +117,39 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
     }
 
     public void refresh(){
-        getAdapter().notifyDataSetChanged();
+        factory.getDataSource().invalidate();
     }
 
     private VerticalWeekAdapter createAdapter() {
 
-        final Executor executor = Executors.newFixedThreadPool(5);
-        Calendar now = Calendar.getInstance();
-        Calendar calendarTime = new GregorianCalendar(
-                now.get(Calendar.YEAR),
-                now.get(Calendar.MONTH),
-                now.get(Calendar.DAY_OF_MONTH));
+//        final Executor executor = Executors.newFixedThreadPool(5);
+//        Calendar now = Calendar.getInstance();
+//        Calendar calendarTime = new GregorianCalendar(
+//                now.get(Calendar.YEAR),
+//                now.get(Calendar.MONTH),
+//                now.get(Calendar.DAY_OF_MONTH));
 
-        CalendarDataSourceFactory factory = new CalendarDataSourceFactory();
-        factory.setDateWatcher(dateWatcher);
-
-        PagedList.Config config = new PagedList.Config.Builder()
-                .setPageSize(5)
-                .setPrefetchDistance(5)
-                .build();
-
-        LiveData<PagedList<CalendarDay>> days = new LivePagedListBuilder(factory,config)
-                .setInitialLoadKey(calendarTime.getTime().getTime())
-                .setFetchExecutor(executor)
-                .build();
+//        factory = new CalendarDataSourceFactory();
+//        factory.setDateWatcher(dateWatcher);
+//
+//        PagedList.Config config = new PagedList.Config.Builder()
+//                .setPageSize(5)
+//                .setPrefetchDistance(5)
+//                .build();
+//
+//        LiveData<PagedList<CalendarDay>> days = new LivePagedListBuilder(factory,config)
+//                .setInitialLoadKey(calendarTime.getTime().getTime())
+//                .setFetchExecutor(executor)
+//                .build();
 
         adapter = new VerticalWeekAdapter(this);
 
-        days.observe(owner, new Observer<PagedList<CalendarDay>>() {
-            @Override
-            public void onChanged(PagedList<CalendarDay> calendarDays) {
-                adapter.submitList(calendarDays);
-            }
-        });
+//        days.observe(owner, new Observer<PagedList<CalendarDay>>() {
+//            @Override
+//            public void onChanged(PagedList<CalendarDay> calendarDays) {
+//                adapter.submitList(calendarDays);
+//            }
+//        });
 
         return adapter;
     }

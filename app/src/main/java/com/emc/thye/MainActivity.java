@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
                         int state = selected.compareTo(new GregorianCalendar(year, month, day)) == 0 ?
                                 CalendarDay.SELECTED : CalendarDay.DEFAULT;
                         Log.i("onCalenderDayClicked", "1 " + selected.getTimeInMillis());
-                        return state;
+                        return selected.compareTo(new GregorianCalendar(year, month, day)) == 0 ?
+                                CalendarDay.SELECTED : CalendarDay.DEFAULT;
                     }
                 })
                 .init(this);

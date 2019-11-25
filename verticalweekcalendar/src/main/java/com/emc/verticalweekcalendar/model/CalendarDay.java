@@ -14,7 +14,7 @@ public class CalendarDay implements Serializable {
 
     private int year;
     private int month;
-    private final Calendar day;
+    private final GregorianCalendar day;
 
     public CalendarDay(int year, int month, int day){
         this.year = year;
@@ -38,7 +38,7 @@ public class CalendarDay implements Serializable {
         return month;
     }
 
-    public Calendar getDay() {
+    public GregorianCalendar getDay() {
         return day;
     }
 

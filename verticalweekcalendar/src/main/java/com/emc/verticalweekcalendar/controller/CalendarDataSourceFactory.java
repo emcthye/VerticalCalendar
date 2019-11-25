@@ -9,16 +9,21 @@ import com.emc.verticalweekcalendar.model.CalendarDay;
 public class CalendarDataSourceFactory extends DataSource.Factory<Long, CalendarDay> {
 
     private DateWatcher dateWatcher;
+    private CalendarDataSource calendarDataSource;
 
     @NonNull
     @Override
     public DataSource<Long, CalendarDay> create() {
-        CalendarDataSource calendarDataSource = new CalendarDataSource();
+        calendarDataSource = new CalendarDataSource();
         calendarDataSource.setDateWatcher(dateWatcher);
         return calendarDataSource;
     }
 
     public void setDateWatcher(DateWatcher dateWatcher) {
         this.dateWatcher = dateWatcher;
+    }
+
+    public CalendarDataSource getDataSource() {
+        return calendarDataSource;
     }
 }
