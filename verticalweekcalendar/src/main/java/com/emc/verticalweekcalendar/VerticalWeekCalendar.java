@@ -94,15 +94,30 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
 
         recyclerView.scrollToPosition(20);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+
+            private int mLastFirstVisibleItem;
+            private boolean mIsScrollingUp;
+
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if (lm.findFirstVisibleItemPosition() < 15 ) {
+
+                final int currentFirstVisibleItem = lm.findFirstVisibleItemPosition();
+
+                if (currentFirstVisibleItem > mLastFirstVisibleItem) {
+                    mIsScrollingUp = false;
+                } else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
+                    mIsScrollingUp = true;
+                }
+
+                mLastFirstVisibleItem = currentFirstVisibleItem;
+
+                if (lm.findFirstVisibleItemPosition() < 5 && mIsScrollingUp) {
                     getAdapter().addCalendarDays(false);
                     Log.i("onScrollChange", "FirstVisibleItem: " + lm.findFirstVisibleItemPosition());
                     Log.i("onScrollChange", "new Size: " + getAdapter().days.size());
-                } else if ((getAdapter().days.size() - 1 - lm.findLastVisibleItemPosition()) < 15) {
+                } else if ((getAdapter().days.size() - 1 - lm.findLastVisibleItemPosition()) < 5 && !mIsScrollingUp) {
                     getAdapter().addCalendarDays(true);
                     Log.i("onScrollChange", "LastVisibleItem: " + lm.findLastVisibleItemPosition());
                     Log.i("onScrollChange", "new Size: " + getAdapter().days.size());

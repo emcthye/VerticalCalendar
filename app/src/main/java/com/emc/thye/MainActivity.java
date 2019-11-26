@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("onCalenderDayClicked", " 2" + new Date(selected.getTimeInMillis()).toString() + " "
                             + new Date(selectedDay.getTimeInMillis()).toString());
                     selected = selectedDay;
-                    calendarView.refresh();
+//                    calendarView.refresh();
                 }
             }
         });

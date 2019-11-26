@@ -21,6 +21,7 @@ import com.emc.verticalweekcalendar.model.CalendarDay;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
         Calendar now = Calendar.getInstance();
 
 
-        for(int i = 1; i <= 30; i++) {
+        for(int i = 1; i <= 15; i++) {
             Calendar today = new GregorianCalendar(
                     now.get(Calendar.YEAR),
                     now.get(Calendar.MONTH),
@@ -76,14 +77,19 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
 
     public List<CalendarDay> addCalendarDays(boolean loadAfter) {
 
-        int loadIdx = loadAfter ? days.size()-1 : 0;
-//        startDay.setTimeInMillis(startTime);
+        int insertIdx = loadAfter ? days.size() - 1 : 0;
+        CalendarDay insertionPoint = days.get(insertIdx-1);
 
         List<CalendarDay> createdDays = new ArrayList<>();
-        for(int i = 1; i <= 20; i++) {
-            GregorianCalendar startDay = days.get(loadIdx).getDay();
+        for(int i = 1; i <= 10; i++) {
+            Calendar startDay = new GregorianCalendar(
+                    insertionPoint.getYear(),
+                    insertionPoint.getMonth(),
+                    insertionPoint.getDay().get(Calendar.DAY_OF_MONTH)
+            );
 
             int daysToAppendOrPrepend = loadAfter ? i : i * -1;
+            Log.i("createdDays", "Day: " + startDay.get(Calendar.DAY_OF_MONTH) + " " + loadAfter);
             startDay.add(Calendar.DAY_OF_MONTH, daysToAppendOrPrepend);
 
             CalendarDay newDay = new CalendarDay(
@@ -94,10 +100,13 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
 
             createdDays.add(newDay);
         }
+        if (!loadAfter) Collections.reverse(createdDays);
 
-        int insertIdx = loadAfter ? days.size() - 1 : 0;
+        Log.i("addCalendarDays1", "Size: " + days.size() + "insertIdx: " + insertIdx + " " + createdDays.toString());
         days.addAll(insertIdx, createdDays);
-        notifyItemInserted(insertIdx);
+        Log.i("addCalendarDays2", "Size: " + days.size() + " " + days.toString());
+        notifyItemRangeInserted(insertIdx,10);
+//        notifyItemInserted(insertIdx);
         return createdDays;
     }
 
