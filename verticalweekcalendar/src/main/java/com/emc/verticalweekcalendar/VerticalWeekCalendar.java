@@ -1,8 +1,6 @@
 package com.emc.verticalweekcalendar;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -10,27 +8,13 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.paging.LivePagedListBuilder;
-import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.emc.verticalweekcalendar.controller.CalendarDataSourceFactory;
 import com.emc.verticalweekcalendar.controller.VerticalWeekAdapter;
 import com.emc.verticalweekcalendar.interfaces.DateWatcher;
 import com.emc.verticalweekcalendar.interfaces.OnDateClickListener;
 import com.emc.verticalweekcalendar.interfaces.ResProvider;
-import com.emc.verticalweekcalendar.model.CalendarDay;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
 
 public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvider {
 
@@ -42,7 +26,6 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
     private int selectedBackground;
 
     private VerticalWeekAdapter adapter;
-    private LifecycleOwner owner;
 
     public VerticalWeekCalendar(Context context) {
         super(context);
@@ -61,8 +44,7 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
         loadStyle(context,attrs);
     }
 
-    private void init(LifecycleOwner owner) {
-        this.owner = owner;
+    private void init() {
         setupRecyclerView();
     }
 
@@ -131,34 +113,7 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
 
     private VerticalWeekAdapter createAdapter() {
 
-//        final Executor executor = Executors.newFixedThreadPool(5);
-//        Calendar now = Calendar.getInstance();
-//        Calendar calendarTime = new GregorianCalendar(
-//                now.get(Calendar.YEAR),
-//                now.get(Calendar.MONTH),
-//                now.get(Calendar.DAY_OF_MONTH));
-
-//        factory = new CalendarDataSourceFactory();
-//        factory.setDateWatcher(dateWatcher);
-//
-//        PagedList.Config config = new PagedList.Config.Builder()
-//                .setPageSize(5)
-//                .setPrefetchDistance(5)
-//                .build();
-//
-//        LiveData<PagedList<CalendarDay>> days = new LivePagedListBuilder(factory,config)
-//                .setInitialLoadKey(calendarTime.getTime().getTime())
-//                .setFetchExecutor(executor)
-//                .build();
-
         adapter = new VerticalWeekAdapter(this);
-
-//        days.observe(owner, new Observer<PagedList<CalendarDay>>() {
-//            @Override
-//            public void onChanged(PagedList<CalendarDay> calendarDays) {
-//                adapter.submitList(calendarDays);
-//            }
-//        });
 
         return adapter;
     }
@@ -243,11 +198,8 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
         public VerticalWeekCalendar init(AppCompatActivity appCompatActivity){
 
             VerticalWeekCalendar calendar = appCompatActivity.findViewById(view);
-            calendar.init(appCompatActivity);
+            calendar.init();
             return calendar;
         }
     }
 }
-
-
-

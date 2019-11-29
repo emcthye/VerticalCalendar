@@ -46,19 +46,4 @@ public class CalendarDay implements Serializable {
     public String toString(){
         return "Day: " + day.get(Calendar.DAY_OF_MONTH) + " State: " + state;
     }
-
-//    public static List<CalendarDay> makeDaysByMonth(int year, int month){
-//        List<CalendarDay> calendarDays = new ArrayList<>();
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.YEAR, year);
-//        calendar.set(Calendar.MONTH, month);
-//
-//        int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-//        for (int i=1; i<=daysInMonth; i++) {
-//            calendarDays.add(new CalendarDay(i));
-//        }
-//
-//        return calendarDays;
-//    }
-
 }

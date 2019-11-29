@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.emc.verticalweekcalendar.VerticalWeekCalendar;
-import com.emc.verticalweekcalendar.controller.VerticalWeekAdapter;
 import com.emc.verticalweekcalendar.interfaces.DateWatcher;
 import com.emc.verticalweekcalendar.interfaces.OnDateClickListener;
 import com.emc.verticalweekcalendar.model.CalendarDay;

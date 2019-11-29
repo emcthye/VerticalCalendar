@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emc.verticalweekcalendar.R;
@@ -37,8 +36,8 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
     private ResProvider resProvider;
 
     public VerticalWeekAdapter(ResProvider resProvider) {
-//        super(DIFF_CALLBACK);
         this.resProvider = resProvider;
+//        final Executor executor = Executors.newFixedThreadPool(5);
         initCalendar();
     }
 
@@ -80,7 +79,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
         }
     }
 
-    public List<CalendarDay> addCalendarDays(boolean loadAfter) {
+    public void addCalendarDays(boolean loadAfter) {
 
         int insertIdx = loadAfter ? days.size() - 1: 0;
         CalendarDay insertionPoint = days.get(insertIdx);
@@ -111,8 +110,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
         days.addAll(loadAfter? insertIdx + 1 : 0, createdDays);
         Log.i("addCalendarDays2", "Size: " + days.size() + " " + days.toString());
         notifyItemRangeInserted(loadAfter? insertIdx + 1 : 0,10);
-//        notifyItemInserted(insertIdx);
-        return createdDays;
+
     }
 
 
