@@ -42,8 +42,6 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
     private int selectedBackground;
 
     private VerticalWeekAdapter adapter;
-    private CalendarDataSourceFactory factory;
-    private DateWatcher dateWatcher;
     private LifecycleOwner owner;
 
     public VerticalWeekCalendar(Context context) {
@@ -131,10 +129,6 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
         return adapter == null ? createAdapter() : adapter;
     }
 
-    public void refresh(){
-        factory.getDataSource().invalidate();
-    }
-
     private VerticalWeekAdapter createAdapter() {
 
 //        final Executor executor = Executors.newFixedThreadPool(5);
@@ -173,8 +167,8 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
         getAdapter().setOnDateClickListener(callback);
     }
 
-    private void setDateWatcher(DateWatcher dateWatcher) {
-        this.dateWatcher = dateWatcher;
+    public void setDateWatcher(DateWatcher dateWatcher) {
+        getAdapter().setDateWatcher(dateWatcher);
     }
 
     public void setCustomFont(String customFont) {
@@ -237,7 +231,6 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
     public static class Builder {
 
         private int view;
-        private DateWatcher dateWatcher;
 
         public Builder() {
         }
@@ -247,15 +240,9 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
             return this;
         }
 
-        public Builder setDateWatcher(DateWatcher dateWatcher) {
-            this.dateWatcher = dateWatcher;
-            return this;
-        }
-
         public VerticalWeekCalendar init(AppCompatActivity appCompatActivity){
 
             VerticalWeekCalendar calendar = appCompatActivity.findViewById(view);
-            calendar.setDateWatcher(dateWatcher);
             calendar.init(appCompatActivity);
             return calendar;
         }

@@ -36,18 +36,6 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
     private OnDateClickListener onDateClickListener;
     private ResProvider resProvider;
 
-    public static final DiffUtil.ItemCallback<CalendarDay> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<CalendarDay>() {
-                @Override
-                public boolean areItemsTheSame(CalendarDay oldItem, CalendarDay newItem) {
-                    return oldItem.getDay().getTimeInMillis() == newItem.getDay().getTimeInMillis();
-                }
-                @Override
-                public boolean areContentsTheSame(CalendarDay oldItem, CalendarDay newItem) {
-                    return oldItem.getDay().getTimeInMillis() == newItem.getDay().getTimeInMillis();
-                }
-            };
-
     public VerticalWeekAdapter(ResProvider resProvider) {
 //        super(DIFF_CALLBACK);
         this.resProvider = resProvider;
@@ -142,6 +130,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
     public void onBindViewHolder(@NonNull VerticalWeekAdapter.DayViewHolder holder, int position) {
         CalendarDay day = days.get(position);
         Log.i("onBindViewHolder", day.toString() + " " + position);
+        day.setState(dateWatcher.getStateForDate(day.getYear(), day.getMonth(), day.getDay().get(Calendar.DAY_OF_MONTH)));
         holder.display(day);
     }
 
@@ -161,11 +150,13 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
         this.onDateClickListener = onDateClickListener;
     }
 
+    public void setDateWatcher(DateWatcher dateWatcher) {
+        this.dateWatcher = dateWatcher;
+    }
+
     @Override
     public void onCalenderDayClicked(int year, int month, int day) {
         if (onDateClickListener!= null) onDateClickListener.onCalenderDayClicked(year,month,day);
-//        recyclerView.scrollToPosition(22);
-//        notifyDataSetChanged();
     }
 
     class DayViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -242,8 +233,8 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
             int month = currentDay.getMonth();
             int day = currentDay.getDay().get(Calendar.DAY_OF_MONTH);
             clickCallback.onCalenderDayClicked(year, month, day);
+            notifyDataSetChanged();
         }
     }
-
 }
 

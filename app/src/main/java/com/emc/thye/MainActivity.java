@@ -32,28 +32,31 @@ public class MainActivity extends AppCompatActivity {
 
         calendarView = new VerticalWeekCalendar.Builder()
                 .setView(R.id.verticalCalendar)
-                .setDateWatcher(new DateWatcher() {
-                    @Override
-                    public int getStateForDate(int year, int month, int day) {
-                        int state = selected.compareTo(new GregorianCalendar(year, month, day)) == 0 ?
-                                CalendarDay.SELECTED : CalendarDay.DEFAULT;
-                        Log.i("onCalenderDayClicked", "1 " + selected.getTimeInMillis());
-                        return selected.compareTo(new GregorianCalendar(year, month, day)) == 0 ?
-                                CalendarDay.SELECTED : CalendarDay.DEFAULT;
-                    }
-                })
                 .init(this);
 
         calendarView.setOnDateClickListener(new OnDateClickListener() {
             @Override
             public void onCalenderDayClicked(int year, int month, int day) {
                 GregorianCalendar selectedDay = new GregorianCalendar(year, month, day);
+                Log.i("onCalenderDayClicked", new Date(selectedDay.getTimeInMillis()).toString());
                 if(selected.compareTo(selectedDay) != 0) {
-                    Log.i("onCalenderDayClicked", " 2" + new Date(selected.getTimeInMillis()).toString() + " "
+                    Log.i("onCalenderDayClicked", "Prev Selected" + new Date(selected.getTimeInMillis()).toString()
+                            + " Current Selected "
                             + new Date(selectedDay.getTimeInMillis()).toString());
                     selected = selectedDay;
-//                    calendarView.refresh();
                 }
+            }
+        });
+
+        calendarView.setDateWatcher(new DateWatcher() {
+            @Override
+            public int getStateForDate(int year, int month, int day) {
+
+                int state = selected.compareTo(new GregorianCalendar(year, month, day)) == 0 ?
+                        CalendarDay.SELECTED : CalendarDay.DEFAULT;
+                Log.i("onCalenderDayClicked", "State: " + state);
+
+                return state;
             }
         });
 
