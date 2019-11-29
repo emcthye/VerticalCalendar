@@ -58,8 +58,25 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
 
         Calendar now = Calendar.getInstance();
 
+        List<CalendarDay> createdDays = new ArrayList<>();
+        for(int i = 0; i <= 7; i++) {
+            Calendar today = new GregorianCalendar(
+                    now.get(Calendar.YEAR),
+                    now.get(Calendar.MONTH),
+                    now.get(Calendar.DAY_OF_MONTH));
+            today.add(Calendar.DAY_OF_MONTH, i * -1);
 
-        for(int i = 1; i <= 15; i++) {
+            CalendarDay createdDay = new CalendarDay(
+                    today.get(Calendar.YEAR),
+                    today.get(Calendar.MONTH),
+                    today.get(Calendar.DAY_OF_MONTH));
+            Log.i("initCalendar", createdDay.toString() + " " + i + " " + today.get(Calendar.DAY_OF_MONTH));
+            createdDays.add(createdDay);
+        }
+        Collections.reverse(createdDays);
+        days.addAll(createdDays);
+
+        for(int i = 1; i <= 7; i++) {
             Calendar today = new GregorianCalendar(
                     now.get(Calendar.YEAR),
                     now.get(Calendar.MONTH),
@@ -77,8 +94,8 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
 
     public List<CalendarDay> addCalendarDays(boolean loadAfter) {
 
-        int insertIdx = loadAfter ? days.size() - 1 : 0;
-        CalendarDay insertionPoint = days.get(insertIdx-1);
+        int insertIdx = loadAfter ? days.size() - 1: 0;
+        CalendarDay insertionPoint = days.get(insertIdx);
 
         List<CalendarDay> createdDays = new ArrayList<>();
         for(int i = 1; i <= 10; i++) {
@@ -103,9 +120,9 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
         if (!loadAfter) Collections.reverse(createdDays);
 
         Log.i("addCalendarDays1", "Size: " + days.size() + "insertIdx: " + insertIdx + " " + createdDays.toString());
-        days.addAll(insertIdx, createdDays);
+        days.addAll(loadAfter? insertIdx + 1 : 0, createdDays);
         Log.i("addCalendarDays2", "Size: " + days.size() + " " + days.toString());
-        notifyItemRangeInserted(insertIdx,10);
+        notifyItemRangeInserted(loadAfter? insertIdx + 1 : 0,10);
 //        notifyItemInserted(insertIdx);
         return createdDays;
     }

@@ -92,7 +92,7 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(getAdapter());
 
-        recyclerView.scrollToPosition(20);
+        recyclerView.scrollToPosition(7);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
 
             private int mLastFirstVisibleItem;
