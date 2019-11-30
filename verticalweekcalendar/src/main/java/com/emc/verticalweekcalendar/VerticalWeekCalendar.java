@@ -76,7 +76,7 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(getAdapter());
 
-        recyclerView.scrollToPosition(7);
+        recyclerView.scrollToPosition(15);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
 
             private int mLastFirstVisibleItem;
@@ -97,11 +97,11 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
 
                 mLastFirstVisibleItem = currentFirstVisibleItem;
 
-                if (lm.findFirstVisibleItemPosition() < 5 && mIsScrollingUp) {
+                if (lm.findFirstVisibleItemPosition() < 10 && mIsScrollingUp) {
                     getAdapter().addCalendarDays(false);
                     Log.i("onScrollChange", "FirstVisibleItem: " + lm.findFirstVisibleItemPosition());
                     Log.i("onScrollChange", "new Size: " + getAdapter().days.size());
-                } else if ((getAdapter().days.size() - 1 - lm.findLastVisibleItemPosition()) < 5 && !mIsScrollingUp) {
+                } else if ((getAdapter().days.size() - 1 - lm.findLastVisibleItemPosition()) < 10 && !mIsScrollingUp) {
                     getAdapter().addCalendarDays(true);
                     Log.i("onScrollChange", "LastVisibleItem: " + lm.findLastVisibleItemPosition());
                     Log.i("onScrollChange", "new Size: " + getAdapter().days.size());
@@ -183,9 +183,7 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
         try {
             return ResourcesCompat.getFont(context, getResources().getIdentifier(customFont.split("\\.")[0],
                     "font", context.getPackageName()));
-
         } catch (Exception e) {
-            Log.e("getCustomFont", e.toString());
             return null;
         }
     }

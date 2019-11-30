@@ -2,6 +2,8 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/quicksand_regular</item>
         <item name="colorPrimary">@color/colorPrimary</item>

@@ -13,9 +13,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         app:customFont="quicksand_bold"
-        app:selectedBackground="@color/colorSelectedDayBG">
-
-    </com.emc.verticalweekcalendar.VerticalWeekCalendar>
+        app:selectedBackground="@color/colorSelectedDayBG"/>
 
     <View
         android:id="@+id/verticalDivider"

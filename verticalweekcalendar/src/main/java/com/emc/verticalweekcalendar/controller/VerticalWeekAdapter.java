@@ -37,7 +37,6 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
 
     public VerticalWeekAdapter(ResProvider resProvider) {
         this.resProvider = resProvider;
-//        final Executor executor = Executors.newFixedThreadPool(5);
         initCalendar();
     }
 
@@ -46,7 +45,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
         Calendar now = Calendar.getInstance();
 
         List<CalendarDay> createdDays = new ArrayList<>();
-        for(int i = 0; i <= 7; i++) {
+        for(int i = 0; i <= 15; i++) {
             Calendar today = new GregorianCalendar(
                     now.get(Calendar.YEAR),
                     now.get(Calendar.MONTH),
@@ -57,13 +56,13 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
                     today.get(Calendar.YEAR),
                     today.get(Calendar.MONTH),
                     today.get(Calendar.DAY_OF_MONTH));
-            Log.i("initCalendar", createdDay.toString() + " " + i + " " + today.get(Calendar.DAY_OF_MONTH));
+
             createdDays.add(createdDay);
         }
         Collections.reverse(createdDays);
         days.addAll(createdDays);
 
-        for(int i = 1; i <= 7; i++) {
+        for(int i = 1; i <= 15; i++) {
             Calendar today = new GregorianCalendar(
                     now.get(Calendar.YEAR),
                     now.get(Calendar.MONTH),
@@ -74,7 +73,6 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
                     today.get(Calendar.YEAR),
                     today.get(Calendar.MONTH),
                     today.get(Calendar.DAY_OF_MONTH));
-            Log.i("initCalendar", createdDay.toString() + " " + i + " " + today.get(Calendar.DAY_OF_MONTH));
             days.add(createdDay);
         }
     }
@@ -85,6 +83,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
         CalendarDay insertionPoint = days.get(insertIdx);
 
         List<CalendarDay> createdDays = new ArrayList<>();
+
         for(int i = 1; i <= 10; i++) {
             Calendar startDay = new GregorianCalendar(
                     insertionPoint.getYear(),
@@ -93,26 +92,22 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
             );
 
             int daysToAppendOrPrepend = loadAfter ? i : i * -1;
-            Log.i("createdDays", "Day: " + startDay.get(Calendar.DAY_OF_MONTH) + " " + loadAfter);
+
             startDay.add(Calendar.DAY_OF_MONTH, daysToAppendOrPrepend);
 
             CalendarDay newDay = new CalendarDay(
                     startDay.get(Calendar.YEAR),
                     startDay.get(Calendar.MONTH),
                     startDay.get(Calendar.DAY_OF_MONTH));
-//            if (dateWatcher != null) newDay.setState(getDateState(newDay.getYear(),newDay.getMonth(),newDay.getDay().get(Calendar.DAY_OF_MONTH)));
 
             createdDays.add(newDay);
         }
+
         if (!loadAfter) Collections.reverse(createdDays);
 
-        Log.i("addCalendarDays1", "Size: " + days.size() + "insertIdx: " + insertIdx + " " + createdDays.toString());
         days.addAll(loadAfter? insertIdx + 1 : 0, createdDays);
-        Log.i("addCalendarDays2", "Size: " + days.size() + " " + days.toString());
         notifyItemRangeInserted(loadAfter? insertIdx + 1 : 0,10);
-
     }
-
 
     @NonNull
     @Override
@@ -127,8 +122,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
     @Override
     public void onBindViewHolder(@NonNull VerticalWeekAdapter.DayViewHolder holder, int position) {
         CalendarDay day = days.get(position);
-        Log.i("onBindViewHolder", day.toString() + " " + position);
-        day.setState(dateWatcher.getStateForDate(day.getYear(), day.getMonth(), day.getDay().get(Calendar.DAY_OF_MONTH)));
+        day.setState(dateWatcher.getStateForDate(day.getYear(), day.getMonth(), day.getDay().get(Calendar.DAY_OF_MONTH), holder));
         holder.display(day);
     }
 
@@ -157,7 +151,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
         if (onDateClickListener!= null) onDateClickListener.onCalenderDayClicked(year,month,day);
     }
 
-    class DayViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class DayViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final String[] intToMonth = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
         private final String[] intToWeekday = { "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
@@ -167,17 +161,17 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
 
         private CalendarDay currentDay;
 
-        private LinearLayout parent;
-        private TextView dayOfWeek;
-        private TextView dayOfMonth;
-        private TextView month;
+        public LinearLayout dayView;
+        public TextView dayOfWeek;
+        public TextView dayOfMonth;
+        public TextView month;
 
         DayViewHolder(@NonNull View itemView, ResProvider resProvider, DateClickCallback clickCallback) {
             super(itemView);
             this.resProvider = resProvider;
             this.clickCallback = clickCallback;
 
-            parent = (LinearLayout) itemView.findViewById(R.id.container);
+            dayView = itemView.findViewById(R.id.container);
             dayOfWeek = itemView.findViewById(R.id.dayOfWeekText);
             dayOfMonth = itemView.findViewById(R.id.dayOfMonthText);
             month = itemView.findViewById(R.id.MonthText);
@@ -187,7 +181,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
 
         void display(CalendarDay day){
             this.currentDay = day;
-            parent.invalidate();
+            dayView.invalidate();
             setupData(day);
             setupStyles(day);
         }
@@ -195,7 +189,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
         private void setupStyles(CalendarDay day) {
             switch(day.getState()){
                 case DEFAULT:
-                    parent.setBackground(ContextCompat.getDrawable(parent.getContext(),resProvider.getDayBackground()));
+                    dayView.setBackground(ContextCompat.getDrawable(dayView.getContext(),resProvider.getDayBackground()));
                     dayOfMonth.setTypeface(resProvider.getCustomFont());
                     dayOfWeek.setTypeface(resProvider.getCustomFont());
                     month.setTypeface(resProvider.getCustomFont());
@@ -206,7 +200,7 @@ public class VerticalWeekAdapter extends RecyclerView.Adapter<VerticalWeekAdapte
 
                     break;
                 case SELECTED:
-                    parent.setBackground(ContextCompat.getDrawable(parent.getContext(),resProvider.getSelectedDayBackground()));
+                    dayView.setBackground(ContextCompat.getDrawable(dayView.getContext(),resProvider.getSelectedDayBackground()));
                     dayOfMonth.setTypeface(resProvider.getCustomFont());
                     dayOfWeek.setTypeface(resProvider.getCustomFont());
                     month.setTypeface(resProvider.getCustomFont());
