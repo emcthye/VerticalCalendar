@@ -15,7 +15,7 @@ publish {
 
     groupId = 'com.emc.thye'
     artifactId = 'VerticalCalendar'
-    publishVersion = '1.0.3'
+    publishVersion = '1.0.4'
 
     desc = 'A custom vertical infnite scroll calendar library'
     website = 'https://github.com/emcthye/VerticalCalendar'

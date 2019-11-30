@@ -8,6 +8,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,7 @@ import com.emc.verticalweekcalendar.interfaces.ResProvider;
 
 public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvider {
 
+    private Context context;
     private String customFont;
     private int defaultDayTextColor;
     private int defaultWeekDayTextColor;
@@ -29,6 +31,7 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
 
     public VerticalWeekCalendar(Context context) {
         super(context);
+        this.context = context;
         initLayout(context);
     }
 
@@ -49,6 +52,7 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
     }
 
     private void initLayout(Context context) {
+        this.context = context;
         setOrientation(VERTICAL);
         inflate(context, R.layout.verticalweekcalendar_week,this);
     }
@@ -177,8 +181,11 @@ public class VerticalWeekCalendar extends LinearLayoutCompat implements ResProvi
             return null;
         }
         try {
-            return Typeface.createFromAsset(getContext().getAssets(), "fonts/" + customFont);
+            return ResourcesCompat.getFont(context, getResources().getIdentifier(customFont.split("\\.")[0],
+                    "font", context.getPackageName()));
+
         } catch (Exception e) {
+            Log.e("getCustomFont", e.toString());
             return null;
         }
     }
