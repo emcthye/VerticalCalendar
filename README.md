@@ -1,5 +1,5 @@
 # VerticalCalendar
-Scroll through calendar days infinitely in a vertical column.
+Scroll calendar days in a vertical column infinitely.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/emcthye/VerticalCalendar/blob/master/LICENSE)
 
