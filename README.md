@@ -1,5 +1,5 @@
 # VerticalCalendar
-This calendar library provides a smooth infinite scrolling experience for the user to select a day.
+Scroll through calendar days infinitely in a vertical column.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/emcthye/VerticalCalendar/blob/master/LICENSE)
 
